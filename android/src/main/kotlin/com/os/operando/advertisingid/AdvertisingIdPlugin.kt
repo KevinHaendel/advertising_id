@@ -21,8 +21,7 @@ class AdvertisingIdPlugin() : FlutterPlugin, ActivityAware, MethodCallHandler {
         fun registerWith(registrar: Registrar) {
             val channel = MethodChannel(registrar.messenger(), "advertising_id")
             val plugin = AdvertisingIdPlugin()
-            val activity = registrar.activity()
-            if (activity != null) plugin.activity = registrar.activity()
+            plugin.activity = registrar.activity()
             channel.setMethodCallHandler(plugin)
         }
     }
@@ -40,12 +39,15 @@ class AdvertisingIdPlugin() : FlutterPlugin, ActivityAware, MethodCallHandler {
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
+        activity = null
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        activity = binding.activity
     }
 
     override fun onDetachedFromActivity() {
+        activity = null
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
